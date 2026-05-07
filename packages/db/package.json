@@ -19,6 +19,7 @@
     "db:reset": "node scripts/prisma-local.mjs migrate reset --force --schema prisma/schema.prisma",
     "db:health": "node scripts/health.mjs",
     "db:generate:postgres": "node scripts/prisma-postgres.mjs generate --schema prisma/schema.postgresql.prisma",
+    "db:validate:postgres": "node scripts/validate-postgres-schema.mjs",
     "db:push:postgres": "node scripts/prisma-postgres.mjs db push --schema prisma/schema.postgresql.prisma"
   },
   "dependencies": {

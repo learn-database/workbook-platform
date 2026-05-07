@@ -13,3 +13,395 @@ model RuntimeSetting {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Course {
+  id          String          @id
+  slug        String          @unique
+  title       String
+  description String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  versions    CourseVersion[]
+  enrollments Enrollment[]
+  lineItems   LtiLineItem[]
+}
+
+model CourseVersion {
+  id            String       @id
+  courseId      String
+  versionLabel  String
+  status        String       @default("draft")
+  schemaVersion String
+  sourceRepo    String?
+  sourceRef     String?
+  publishedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  course        Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  modules       Module[]
+  cases         Case[]
+  rubrics       Rubric[]
+  publishRuns   PublishRun[]
+
+  @@unique([courseId, versionLabel])
+  @@index([courseId, status])
+}
+
+model Module {
+  id              String        @id
+  courseVersionId String
+  number          Int
+  slug            String
+  title           String
+  overview        String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  courseVersion   CourseVersion @relation(fields: [courseVersionId], references: [id], onDelete: Cascade)
+  lessons         Lesson[]
+
+  @@unique([courseVersionId, number])
+  @@unique([courseVersionId, slug])
+}
+
+model Lesson {
+  id             String         @id
+  moduleId       String
+  stableId       String
+  lessonNumber   Int
+  slug           String
+  title          String
+  overview       String?
+  summary        String?
+  schemaRef      String?
+  contentVersion String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  module         Module         @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  contentBlocks  ContentBlock[]
+  interactions   Interaction[]
+  attempts       Attempt[]
+  lineItems      LtiLineItem[]
+
+  @@unique([moduleId, stableId])
+  @@unique([moduleId, lessonNumber])
+  @@index([moduleId, slug])
+}
+
+model ContentBlock {
+  id        String   @id
+  lessonId  String
+  stableId  String
+  sortOrder Int
+  kind      String   @default("content_block")
+  title     String?
+  body      String
+  caseId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  case      Case?    @relation(fields: [caseId], references: [id], onDelete: SetNull)
+
+  @@unique([lessonId, stableId])
+  @@index([lessonId, sortOrder])
+}
+
+model Interaction {
+  id            String              @id
+  lessonId      String
+  stableId      String
+  kind          String
+  sortOrder     Int
+  title         String?
+  prompt        String
+  body          String?
+  caseId        String?
+  scoringMode   String
+  points        Float               @default(0)
+  gradingPrompt String?
+  answerKey     String?
+  metadata      String?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  lesson        Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  case          Case?               @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  options       InteractionOption[]
+  rubrics       Rubric[]
+  responses     Response[]
+  gradeResults  GradeResult[]
+
+  @@unique([lessonId, stableId])
+  @@index([lessonId, sortOrder])
+  @@index([kind])
+}
+
+model InteractionOption {
+  id            String      @id
+  interactionId String
+  stableId      String
+  sortOrder     Int
+  label         String?
+  text          String
+  value         String?
+  isCorrect     Boolean?
+  feedback      String?
+  interaction   Interaction @relation(fields: [interactionId], references: [id], onDelete: Cascade)
+
+  @@unique([interactionId, stableId])
+  @@index([interactionId, sortOrder])
+}
+
+model Case {
+  id              String         @id
+  courseVersionId String
+  stableId        String
+  title           String
+  summary         String
+  primaryUse      String?
+  content         String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  courseVersion   CourseVersion  @relation(fields: [courseVersionId], references: [id], onDelete: Cascade)
+  contentBlocks   ContentBlock[]
+  interactions    Interaction[]
+
+  @@unique([courseVersionId, stableId])
+}
+
+model Rubric {
+  id              String        @id
+  courseVersionId String
+  interactionId   String?
+  stableId        String
+  title           String
+  criteria        String
+  scoringPrompt   String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  courseVersion   CourseVersion @relation(fields: [courseVersionId], references: [id], onDelete: Cascade)
+  interaction     Interaction?  @relation(fields: [interactionId], references: [id], onDelete: Cascade)
+
+  @@unique([courseVersionId, stableId])
+  @@index([interactionId])
+}
+
+model User {
+  id          String       @id
+  externalId  String?      @unique
+  email       String?      @unique
+  name        String?
+  role        String       @default("student")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  enrollments Enrollment[]
+  launches    Launch[]
+  attempts    Attempt[]
+  auditEvents AuditEvent[]
+}
+
+model Enrollment {
+  id        String    @id
+  courseId  String
+  userId    String
+  role      String    @default("student")
+  status    String    @default("active")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attempts  Attempt[]
+
+  @@unique([courseId, userId])
+  @@index([userId])
+}
+
+model Launch {
+  id             String         @id
+  userId         String?
+  platformId     String?
+  deploymentId   String?
+  lineItemId     String?
+  contextId      String?
+  resourceLinkId String?
+  nonce          String?
+  launchData     String?
+  createdAt      DateTime       @default(now())
+  user           User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  platform       LtiPlatform?   @relation(fields: [platformId], references: [id], onDelete: SetNull)
+  deployment     LtiDeployment? @relation(fields: [deploymentId], references: [id], onDelete: SetNull)
+  lineItem       LtiLineItem?   @relation(fields: [lineItemId], references: [id], onDelete: SetNull)
+  attempts       Attempt[]
+
+  @@index([userId, createdAt])
+  @@index([deploymentId, contextId])
+}
+
+model Attempt {
+  id              String             @id
+  lessonId        String
+  userId          String
+  enrollmentId    String?
+  sourceLaunchId  String?
+  attemptNumber   Int
+  status          String             @default("in_progress")
+  startedAt       DateTime           @default(now())
+  submittedAt     DateTime?
+  lockedAt        DateTime?
+  totalScore      Float?
+  maxScore        Float?
+  lesson          Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollment      Enrollment?        @relation(fields: [enrollmentId], references: [id], onDelete: SetNull)
+  sourceLaunch    Launch?            @relation(fields: [sourceLaunchId], references: [id], onDelete: SetNull)
+  responses       Response[]
+  gradeResults    GradeResult[]
+  passbackLogs    GradePassbackLog[]
+
+  @@unique([lessonId, userId, attemptNumber])
+  @@index([userId, status])
+  @@index([lessonId, status])
+}
+
+model Response {
+  id            String      @id
+  attemptId     String
+  interactionId String
+  response      String
+  isSubmitted   Boolean     @default(false)
+  submittedAt   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  attempt       Attempt     @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  interaction   Interaction @relation(fields: [interactionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, interactionId])
+  @@index([interactionId])
+}
+
+model GradeResult {
+  id            String       @id
+  attemptId     String
+  interactionId String?
+  status        String
+  score         Float
+  maxScore      Float
+  feedback      String?
+  grader        String?
+  gradedAt      DateTime     @default(now())
+  attempt       Attempt      @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  interaction   Interaction? @relation(fields: [interactionId], references: [id], onDelete: SetNull)
+
+  @@index([attemptId, gradedAt])
+  @@index([interactionId])
+}
+
+model GradePassbackLog {
+  id             String       @id
+  attemptId      String
+  lineItemId     String?
+  status         String
+  scoreGiven     Float?
+  scoreMaximum   Float?
+  requestBody    String?
+  responseBody   String?
+  error          String?
+  createdAt      DateTime     @default(now())
+  attempt        Attempt      @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  lineItem       LtiLineItem? @relation(fields: [lineItemId], references: [id], onDelete: SetNull)
+
+  @@index([attemptId, createdAt])
+  @@index([lineItemId])
+}
+
+model LtiPlatform {
+  id               String            @id
+  issuer           String            @unique
+  name             String
+  authLoginUrl     String?
+  authTokenUrl     String?
+  jwksUrl          String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  deployments      LtiDeployment[]
+  registrations    LtiRegistration[]
+  launches         Launch[]
+}
+
+model LtiDeployment {
+  id           String          @id
+  platformId   String
+  deploymentId String
+  name         String?
+  active       Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  platform     LtiPlatform     @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  lineItems    LtiLineItem[]
+  launches     Launch[]
+
+  @@unique([platformId, deploymentId])
+}
+
+model LtiRegistration {
+  id             String      @id
+  platformId     String
+  clientId       String
+  keySetUrl      String?
+  authLoginUrl   String?
+  authTokenUrl   String?
+  privateKeyRef  String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  platform       LtiPlatform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@unique([platformId, clientId])
+}
+
+model LtiLineItem {
+  id           String             @id
+  deploymentId String
+  courseId     String?
+  lessonId     String?
+  lineItemUrl  String
+  label        String
+  maxScore     Float
+  tag          String?
+  resourceId   String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  deployment   LtiDeployment      @relation(fields: [deploymentId], references: [id], onDelete: Cascade)
+  course       Course?            @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  lesson       Lesson?            @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  launches     Launch[]
+  passbackLogs GradePassbackLog[]
+
+  @@unique([deploymentId, lineItemUrl])
+  @@index([courseId])
+  @@index([lessonId])
+}
+
+model PublishRun {
+  id              String        @id
+  courseVersionId String
+  status          String
+  sourceSummary   String?
+  log             String?
+  startedAt       DateTime      @default(now())
+  finishedAt      DateTime?
+  courseVersion   CourseVersion @relation(fields: [courseVersionId], references: [id], onDelete: Cascade)
+
+  @@index([courseVersionId, startedAt])
+}
+
+model AuditEvent {
+  id          String   @id
+  actorUserId String?
+  eventType   String
+  entityType  String
+  entityId    String
+  metadata    String?
+  createdAt   DateTime @default(now())
+  actor       User?    @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId, createdAt])
+  @@index([entityType, entityId])
+}
