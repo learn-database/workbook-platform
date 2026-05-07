@@ -34,7 +34,8 @@ Runtime JavaScript
 
 Lesson data
   src/lib/lessons/*.json
-  encoded b*.json versions
+  legacy encoded b*.json versions as source-only migration inputs, not platform
+  content
 
 Question types
   text block
@@ -97,7 +98,7 @@ Do not reuse blindly:
 - browser-only score persistence
 - direct frontend calls to SQL execution services
 - duplicated static lesson pages
-- encoded lesson files as the primary distribution format
+- encoded lesson files or base64 lesson payloads in the new platform
 - SCORM-style hooks as the primary LMS integration strategy
 
 Migration approach:

@@ -1,0 +1,28 @@
+{
+  "name": "@learn-database/content-import",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "validate:lesson-3-2": "tsx src/cli/validate-lesson-3-2.ts",
+    "import:lesson-3-2": "tsx src/cli/import-lesson-3-2.ts"
+  },
+  "dependencies": {
+    "@learn-database/db": "0.1.0",
+    "@learn-database/workbook-schema": "0.1.0",
+    "@prisma/client": "^6.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0"
+  }
+}
