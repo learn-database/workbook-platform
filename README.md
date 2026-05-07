@@ -12,6 +12,48 @@ The platform is planned to support:
 
 See [docs/workbook-platform-build-plan.md](docs/workbook-platform-build-plan.md) for the initial build plan, [docs/development-plan.md](docs/development-plan.md) for the implementation sequence, and [docs/github-project-plan.md](docs/github-project-plan.md) for project/milestone/issue planning.
 
+## Local Development
+
+Prerequisites:
+
+- Node.js `22` or newer
+- npm `11` or newer
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Copy the placeholder environment file if you want local overrides:
+
+```bash
+cp .env.example .env
+```
+
+Local development uses SQLite by default. The generated database file is ignored
+by Git.
+
+```bash
+npm run db:migrate
+npm run db:health
+npm run dev
+```
+
+Useful verification commands:
+
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+npm run verify
+```
+
+Production should use PostgreSQL. Keep real connection strings and LTI secrets in
+runtime environment variables or a managed secret store, never in this public
+repository.
+
 Design review docs:
 
 - [Database Schema](docs/design/database-schema.md)
