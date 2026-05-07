@@ -7,7 +7,7 @@ sequenceDiagram
     actor Student
     participant Web as Next.js Web App
     participant API as NestJS API
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
 
     Student->>Web: Open standalone lesson URL
     Web->>API: GET active course/module/lesson
@@ -25,7 +25,7 @@ sequenceDiagram
     participant Canvas
     participant Web as Next.js Web App
     participant API as NestJS API
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
 
     Student->>Canvas: Open Canvas assignment or module item
     Canvas->>Canvas: Render embedded LTI iframe
@@ -52,7 +52,7 @@ sequenceDiagram
     participant Web as Next.js Web App
     participant API as NestJS API
     participant Scorer as Scoring Service
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
 
     Student->>Web: Submit interaction response
     Web->>API: POST response
@@ -74,7 +74,7 @@ sequenceDiagram
     actor Student
     participant Web as Next.js Web App
     participant API as NestJS API
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
 
     Student->>Web: Submit written/design response
     Web->>API: POST response
@@ -98,7 +98,7 @@ sequenceDiagram
     participant Web as Next.js Web App
     participant API as NestJS API
     participant SQL as SQL Execution Service
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
 
     Student->>Web: Submit SQL query
     Web->>API: POST SQL response
@@ -119,7 +119,7 @@ sequenceDiagram
     actor Student
     participant Web as Next.js Web App
     participant API as NestJS API
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
     participant Canvas as Canvas AGS
 
     Student->>Web: Submit final lesson attempt
@@ -141,7 +141,7 @@ sequenceDiagram
     actor Instructor
     participant Web as Instructor UI
     participant API as NestJS API
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
     participant Canvas as Canvas AGS
 
     Instructor->>Web: Open attempt analytics or passback failures
@@ -166,7 +166,7 @@ sequenceDiagram
     participant Content as course-materials repo
     participant Tool as Content Build Tool
     participant API as Platform Import API
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
 
     Author->>Content: Edit Markdown / workbook source
     Author->>Content: Commit reviewed changes
@@ -189,7 +189,7 @@ sequenceDiagram
     actor Student
     participant Web as Next.js Web App
     participant API as NestJS API
-    participant DB as PostgreSQL
+    participant DB as Runtime DB
 
     Student->>Web: Click Show Solution
     Web->>API: POST solution reveal event

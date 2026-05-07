@@ -10,7 +10,7 @@ The platform is planned to support:
 - automatic or self-guided scoring and Canvas grade passback
 - content publishing from `learn-database/course-materials`
 
-See [docs/workbook-platform-build-plan.md](docs/workbook-platform-build-plan.md) for the initial build plan.
+See [docs/workbook-platform-build-plan.md](docs/workbook-platform-build-plan.md) for the initial build plan, [docs/development-plan.md](docs/development-plan.md) for the implementation sequence, and [docs/github-project-plan.md](docs/github-project-plan.md) for project/milestone/issue planning.
 
 Design review docs:
 

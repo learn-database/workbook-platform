@@ -8,7 +8,7 @@ Build an interactive workbook platform for the Learn Database course that can ru
 - a standalone public or private course website for preview, public delivery, or non-LMS learners
 - a self-guided, grade-integrated learning tool with student attempts, automatic or self-guided scoring, and Canvas grade passback
 
-The current static `src` folder in the original `dbm-materials` repository should be treated as a prototype for interaction behavior and lesson JSON structure, not as the long-term architecture.
+The current static `src` folder in the original `dbm-materials` repository should be treated as a reusable prototype for interaction behavior, UI direction, and lesson JSON structure, not as disposable work. It should not remain the long-term architecture by itself, but its strongest parts should be carried forward.
 
 Related design docs:
 
@@ -24,8 +24,8 @@ The existing static player already provides useful patterns:
 HTML shells
   index.html
   lesson.html
-  syc01.html ... syc08.html
-  playground.html
+  syc01.html ... syc08.html (for testing)
+  playground.html (for testing)
 
 Runtime JavaScript
   main.js
@@ -56,7 +56,60 @@ Support features
   SCORM-style LMS save hooks
 ```
 
-The platform should preserve the useful interaction patterns but replace hard-coded static pages, browser-only state, duplicated lesson shells, and static JSON delivery with a database-backed application.
+The platform should preserve the useful interaction patterns, UI concept, and schema discipline but replace hard-coded static pages, browser-only state, duplicated lesson shells, and static JSON delivery with a database-backed application.
+
+## Static Player Reuse Strategy
+
+The static HTML project should be reused as the first implementation reference.
+
+Reuse directly or adapt:
+
+```text
+src/lib/custom.css
+  visual direction, spacing, lesson player feel, and interaction styling
+
+src/lib/js/*question.js
+  interaction behavior patterns and feedback concepts
+
+src/lib/js/lesson.js
+src/lib/js/question.js
+src/lib/js/grade.js
+  lesson rendering, question abstraction, and grading flow concepts
+
+src/lesson json schemas/*.schema.json
+  baseline schema definitions for legacy lesson/question types
+
+src/lesson json schemas/samples/*.sample.json
+  test fixtures and schema examples
+
+src/lib/lessons/*.json
+  migration fixtures and regression examples
+
+src/lib/schemas/*.json
+  database schema display assets for SQL lessons
+
+src/lib/vendor/prism/*
+  SQL/code display and editing experience, subject to package/license review
+```
+
+Do not reuse blindly:
+
+- browser-only score persistence
+- direct frontend calls to SQL execution services
+- duplicated static lesson pages
+- encoded lesson files as the primary distribution format
+- SCORM-style hooks as the primary LMS integration strategy
+
+Migration approach:
+
+1. Keep a local reference copy or import path to the static player during early development.
+2. Convert the existing JSON schemas into `packages/workbook-schema` as the legacy-compatible content contract.
+3. Build compatibility tests using current sample JSON and selected existing lessons.
+4. Port the UI patterns into React components before redesigning them.
+5. Move persistence, scoring authority, SQL execution, LTI launch, and grade passback to the backend.
+6. Extend the schema only where v4 needs new block types such as case cards, design judgments, self-grading prompts, and project checkpoints.
+
+This gives the new platform continuity with the current player while still solving the architectural limitations that require a backend and Canvas grade integration.
 
 ## Target Architecture
 
@@ -88,7 +141,8 @@ Recommended stack:
 
 - Frontend: Next.js and React
 - Backend: NestJS
-- Database: PostgreSQL
+- Local development database: SQLite
+- Production database: PostgreSQL
 - ORM: Prisma
 - Deployment: Docker plus a cloud host
 - LMS integration: LTI 1.3 Advantage, especially Assignment and Grade Services
@@ -96,6 +150,10 @@ Recommended stack:
 Primary delivery mode:
 
 Canvas should be treated as the primary student-facing container for LMS sections. The workbook UI is still served by this platform, but Canvas launches should render it in an embedded LTI iframe unless an instructor explicitly chooses an external-window placement. Standalone delivery remains important for preview, testing, public demos, and non-Canvas use.
+
+Database environment rule:
+
+SQLite should be the default local development database because it keeps setup simple for early contributors and AI coding agents. PostgreSQL should be the production database and the staging/parity database for deployment validation. Prisma should be used carefully so the MVP schema works in SQLite locally while still validating PostgreSQL behavior before release.
 
 ## Core Data Flow
 
@@ -408,13 +466,15 @@ This verifies the essential architecture before converting the whole course.
 
 Migration order:
 
-1. Copy the existing lesson/question schema ideas into `packages/workbook-schema`.
-2. Write an importer for existing `src/lib/lessons/*.json`.
-3. Import one existing lesson, likely `10 Functional Dependencies`.
-4. Rebuild the lesson renderer in React for all existing question types.
-5. Import the `Seek Your Challenge` lessons.
-6. Add the v4 workbook lesson format.
-7. Pilot Module 3 or Module 4 v4 content.
+1. Inventory the current static player UI, interaction renderers, JSON schemas, sample JSON, and lesson files.
+2. Copy the existing lesson/question schema ideas into `packages/workbook-schema`.
+3. Write compatibility tests from `src/lesson json schemas/samples/*.sample.json`.
+4. Write an importer for existing `src/lib/lessons/*.json`.
+5. Import one existing lesson, likely `10 Functional Dependencies`, as a legacy fixture.
+6. Rebuild the lesson renderer in React while preserving the current UI concept and interaction behavior.
+7. Import the `Seek Your Challenge` lessons.
+8. Add the v4 workbook lesson format as an extension of the proven schema model.
+9. Pilot Module 3 or Module 4 v4 content.
 
 ## Later Enhancements
 
