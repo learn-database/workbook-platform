@@ -12,7 +12,7 @@
     "dev:web": "npm run dev -w @learn-database/web",
     "dev:api": "npm run dev -w @learn-database/api",
     "build": "npm run db:generate && npm run build:packages && npm run build -w @learn-database/api && npm run build -w @learn-database/web",
-    "build:packages": "npm run build -w @learn-database/workbook-schema && npm run build -w @learn-database/lti && npm run build -w @learn-database/db",
+    "build:packages": "npm run build -w @learn-database/workbook-schema && npm run build -w @learn-database/lti && npm run build -w @learn-database/db && npm run build -w @learn-database/content-import",
     "lint": "eslint .",
     "typecheck": "npm run db:generate && npm run build:packages && npm run typecheck --workspaces --if-present",
     "test": "npm run db:generate && npm run test --workspaces --if-present",
