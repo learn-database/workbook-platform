@@ -10,6 +10,12 @@ Build an interactive workbook platform for the Learn Database course that can ru
 
 The current static `src` folder in the original `dbm-materials` repository should be treated as a prototype for interaction behavior and lesson JSON structure, not as the long-term architecture.
 
+Related design docs:
+
+- [Database Schema](design/database-schema.md)
+- [Sequence Diagrams](design/sequence-diagrams.md)
+- [Use Cases](design/use-cases.md)
+
 ## Current Static Player Baseline
 
 The existing static player already provides useful patterns:

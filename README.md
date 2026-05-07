@@ -11,3 +11,9 @@ The platform is planned to support:
 - content publishing from `learn-database/course-materials`
 
 See [docs/workbook-platform-build-plan.md](docs/workbook-platform-build-plan.md) for the initial build plan.
+
+Design review docs:
+
+- [Database Schema](docs/design/database-schema.md)
+- [Sequence Diagrams](docs/design/sequence-diagrams.md)
+- [Use Cases](docs/design/use-cases.md)
