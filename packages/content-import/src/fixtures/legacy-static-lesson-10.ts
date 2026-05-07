@@ -1,6 +1,49 @@
 import type { LegacyStaticLesson } from "../index.js";
 
 export const legacyStaticLesson10: LegacyStaticLesson = {
-  lessons_raw:
-    "WwogIHsKICAgICJpZCI6IDEwLAogICAgInRpdGxlIjogIkZ1bmN0aW9uYWwgRGVwZW5kZW5jaWVzIiwKICAgICJvdmVydmlldyI6ICJTZWxlY3RlZCBzdGF0aWMgcGxheWVyIGZpeHR1cmUuIiwKICAgICJzY2hlbWEiOiAiTm9ydGhXaW5kIiwKICAgICJxdWVzdGlvbnMiOiBbCiAgICAgIHsKICAgICAgICAiaWQiOiAxLAogICAgICAgICJ0eXBlIjogInRleHQgYmxvY2siLAogICAgICAgICJwcm9tcHQiOiAiUmVhZCB0aGUgc3RhdGljIHBsYXllciBjb21wYXRpYmlsaXR5IG5vdGUuIiwKICAgICAgICAic29sdXRpb24iOiAiIiwKICAgICAgICAicG9pbnRzIjogMCwKICAgICAgICAicmVzcG9uc2UiOiAiIiwKICAgICAgICAiaGludCI6ICIiLAogICAgICAgICJmZWVkYmFjayI6ICIiLAogICAgICAgICJmZWVkYmFja19jb3JyZWN0IjogIiIsCiAgICAgICAgImZlZWRiYWNrX2luY29ycmVjdCI6ICIiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiaWQiOiAyLAogICAgICAgICJ0eXBlIjogIm11bHRpcGxlIGNob2ljZSIsCiAgICAgICAgInByb21wdCI6ICJXaGljaCBwYXR0ZXJuIGlzIHN1cHBvcnRlZCBieSB0aGlzIGxlZ2FjeSBmaXh0dXJlPyIsCiAgICAgICAgIm9wdGlvbnMiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJpZCI6IDEsCiAgICAgICAgICAgICJ0ZXh0IjogIkxlZ2FjeSBxdWVzdGlvbiB2YWxpZGF0aW9uIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgImlkIjogMiwKICAgICAgICAgICAgInRleHQiOiAiQ2FudmFzIGxhdW5jaCIKICAgICAgICAgIH0KICAgICAgICBdLAogICAgICAgICJzb2x1dGlvbiI6IDEsCiAgICAgICAgInBvaW50cyI6IDEsCiAgICAgICAgInJlc3BvbnNlIjogMCwKICAgICAgICAiaGludCI6ICJDaG9vc2UgdGhlIHZhbGlkYXRpb24tcmVsYXRlZCBhbnN3ZXIuIiwKICAgICAgICAiZmVlZGJhY2siOiAiIiwKICAgICAgICAiZmVlZGJhY2tfY29ycmVjdCI6ICJDb3JyZWN0LiIsCiAgICAgICAgImZlZWRiYWNrX2luY29ycmVjdCI6ICJUcnkgYWdhaW4uIiwKICAgICAgICAiYm9udXMiOiBmYWxzZQogICAgICB9CiAgICBdCiAgfQpd",
+  lessons_raw: [
+    {
+      id: 10,
+      title: "Functional Dependencies",
+      overview: "Selected static player fixture.",
+      schema: "NorthWind",
+      questions: [
+        {
+          id: 1,
+          type: "text block",
+          prompt: "Read the static player compatibility note.",
+          solution: "",
+          points: 0,
+          response: "",
+          hint: "",
+          feedback: "",
+          feedback_correct: "",
+          feedback_incorrect: "",
+        },
+        {
+          id: 2,
+          type: "multiple choice",
+          prompt: "Which pattern is supported by this legacy fixture?",
+          options: [
+            {
+              id: 1,
+              text: "Legacy question validation",
+            },
+            {
+              id: 2,
+              text: "Canvas launch",
+            },
+          ],
+          solution: 1,
+          points: 1,
+          response: 0,
+          hint: "Choose the validation-related answer.",
+          feedback: "",
+          feedback_correct: "Correct.",
+          feedback_incorrect: "Try again.",
+          bonus: false,
+        },
+      ],
+    },
+  ],
 };

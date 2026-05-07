@@ -60,7 +60,7 @@ export interface ImportResult {
 }
 
 export interface LegacyStaticLesson {
-  lessons_raw: string | unknown[];
+  lessons_raw: unknown[];
 }
 
 interface LegacyQuestion {
@@ -153,19 +153,10 @@ export function validateWorkbookPackage(
   return { valid: errors.length === 0, errors, warnings };
 }
 
-export function decodeLegacyStaticLesson(
+export function readLegacyStaticLesson(
   legacyStaticLesson: LegacyStaticLesson,
 ): LegacyLesson[] {
-  if (Array.isArray(legacyStaticLesson.lessons_raw)) {
-    return legacyStaticLesson.lessons_raw as LegacyLesson[];
-  }
-
-  const decoded = Buffer.from(
-    legacyStaticLesson.lessons_raw,
-    "base64",
-  ).toString("utf8");
-
-  return JSON.parse(decoded) as LegacyLesson[];
+  return legacyStaticLesson.lessons_raw as LegacyLesson[];
 }
 
 export function validateLegacyStaticLesson(
@@ -173,7 +164,7 @@ export function validateLegacyStaticLesson(
 ): ContentValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
-  const lessons = decodeLegacyStaticLesson(legacyStaticLesson);
+  const lessons = readLegacyStaticLesson(legacyStaticLesson);
 
   for (const lesson of lessons) {
     if (!Array.isArray(lesson.questions)) {

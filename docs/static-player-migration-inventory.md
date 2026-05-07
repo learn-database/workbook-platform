@@ -139,9 +139,9 @@ content without review:
   module-style lesson fixtures.
 - `src/lib/lessons/21009901.json` through `src/lib/lessons/21009908.json`:
   Seek Your Challenge fixture flow.
-- `src/lib/lessons/b*.json`: encoded legacy variants. Keep only as decoder or
-  backward-compatibility fixtures; do not use encoded JSON as the platform's
-  authoring format.
+- `src/lib/lessons/b*.json`: encoded legacy variants. Do not migrate these into
+  the new platform. If legacy content is needed, decode it outside the platform
+  repository and commit only reviewed plain JSON or TypeScript fixtures.
 - `src/lib/lessons/lesson_data_10.js`: legacy JavaScript-wrapped fixture; use
   only if needed for compatibility coverage.
 
@@ -182,7 +182,8 @@ Do not reuse these patterns directly:
   use LTI 1.3 launch validation and Assignment and Grade Services grade passback.
 - Browser global variables as the source of truth for grades, responses, lesson
   state, or content version.
-- Encoded `b*.json` files as a normal content delivery format.
+- Encoded `b*.json` files or base64 lesson payloads. The platform should accept
+  reviewed plain content only.
 - Browser-only local persistence as authoritative attempt storage.
 - Raw HTML-string renderer output as the final implementation pattern.
 - Direct vendor/CDN script copying without license review and package-managed
@@ -211,4 +212,5 @@ Do not reuse these patterns directly:
 - JSON schemas and schema sample files are listed.
 - SQL schema display assets are identified.
 - Non-reuse boundaries are explicit for browser persistence, direct SQL calls,
-  direct save-state calls, SCORM hooks, and encoded/browser-global state.
+  direct save-state calls, SCORM hooks, encoded lessons, and browser-global
+  state.

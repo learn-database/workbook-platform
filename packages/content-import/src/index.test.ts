@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { lesson32WorkbookPackage } from "./fixtures/lesson-3-2.js";
 import { legacyStaticLesson10 } from "./fixtures/legacy-static-lesson-10.js";
 import {
-  decodeLegacyStaticLesson,
   legacyQuestionToWorkbookKind,
+  readLegacyStaticLesson,
   validateLegacyStaticLesson,
   validateWorkbookPackage,
   type WorkbookPackage,
@@ -47,8 +47,8 @@ describe("content import validation", () => {
     expect(result.errors.join("\n")).toContain("missing scoring configuration");
   });
 
-  it("decodes and validates a selected static player lesson JSON fixture", () => {
-    const decoded = decodeLegacyStaticLesson(legacyStaticLesson10);
+  it("reads and validates a selected plain static player lesson JSON fixture", () => {
+    const decoded = readLegacyStaticLesson(legacyStaticLesson10);
     const result = validateLegacyStaticLesson(legacyStaticLesson10);
 
     expect(decoded).toHaveLength(1);
