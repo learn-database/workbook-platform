@@ -330,26 +330,40 @@ code {
 }
 
 .question-buttons button,
+.question-buttons a,
 .actions button,
 .back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--blue);
   border-radius: 0.35rem;
   background: var(--paper);
   padding: 0.42rem 0.72rem;
   color: var(--blue);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .question-buttons button:hover,
+.question-buttons a:hover,
 .actions button:hover,
 .back-button:hover {
   background: #eef5ff;
 }
 
 .question-buttons button:first-child,
+.question-buttons a:first-child,
 .actions .primary {
   background: var(--blue);
   color: white;
+}
+
+button:disabled {
+  border-color: #adb5bd;
+  background: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
 }
 
 .back-button {
@@ -391,6 +405,11 @@ code {
   border-left: 4px solid var(--blue);
   background: var(--soft-blue);
   font-weight: 700;
+}
+
+.lesson-stack {
+  display: grid;
+  gap: 1rem;
 }
 
 .question-card {
@@ -436,6 +455,12 @@ code {
   line-height: 1.55;
 }
 
+.content-card {
+  background:
+    linear-gradient(135deg, rgba(25, 135, 84, 0.08), transparent 38%),
+    var(--paper);
+}
+
 .prompt-box {
   overflow: auto;
   border: 1px solid #b6d8f2;
@@ -443,6 +468,10 @@ code {
   background: var(--schema);
   margin: 1rem 0;
   padding: 1rem;
+}
+
+.prompt-box p:last-child {
+  margin-bottom: 0;
 }
 
 .prompt-box ul {
@@ -465,6 +494,54 @@ code {
   display: block;
   margin: 1rem 0 0.4rem;
   font-weight: 700;
+}
+
+.options-field {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+.options-field legend {
+  padding: 0 0.35rem;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.options-field label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  background: #fbfcfe;
+  padding: 0.75rem;
+}
+
+.options-field input {
+  margin-top: 0.2rem;
+}
+
+.grading-prompt {
+  border: 1px solid #cfe2ff;
+  border-radius: 0.375rem;
+  background: #f6faff;
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+}
+
+.grading-prompt summary {
+  color: var(--blue-dark);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.grading-prompt p {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
 }
 
 textarea {

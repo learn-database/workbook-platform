@@ -1,6 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-process.env.DATABASE_URL ??= "file:./dev.db";
+const packageRoot = dirname(fileURLToPath(import.meta.url));
+const localDatabaseUrl = `file:${join(packageRoot, "../prisma/dev.db")}`;
+
+process.env.DATABASE_URL ??= localDatabaseUrl;
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
