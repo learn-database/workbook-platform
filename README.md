@@ -5,7 +5,7 @@ This repository will contain the interactive workbook platform for Learn Databas
 The platform is planned to support:
 
 - standalone course website delivery
-- Canvas/LMS integration through LTI 1.3
+- Canvas-embedded LMS delivery through LTI 1.3, with lesson content rendered inside Canvas instead of sending students to a separate site by default
 - student attempts and response storage
 - automatic or self-guided scoring and Canvas grade passback
 - content publishing from `learn-database/course-materials`

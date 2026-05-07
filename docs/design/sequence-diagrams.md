@@ -17,7 +17,7 @@ sequenceDiagram
     Web-->>Student: Render interactive workbook lesson
 ```
 
-## Canvas LTI Launch
+## Canvas-Embedded LTI Launch
 
 ```mermaid
 sequenceDiagram
@@ -27,7 +27,8 @@ sequenceDiagram
     participant API as NestJS API
     participant DB as PostgreSQL
 
-    Student->>Canvas: Open Canvas assignment
+    Student->>Canvas: Open Canvas assignment or module item
+    Canvas->>Canvas: Render embedded LTI iframe
     Canvas->>API: OIDC login initiation
     API-->>Canvas: Redirect for LTI launch
     Canvas->>API: POST LTI launch JWT
@@ -40,7 +41,7 @@ sequenceDiagram
     API->>DB: Load versioned lesson content
     DB-->>API: Lesson payload
     API-->>Web: Lesson payload
-    Web-->>Student: Render workbook inside Canvas
+    Web-->>Student: Render workbook inside Canvas iframe
 ```
 
 ## Save Response And Automatic Score

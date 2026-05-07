@@ -17,7 +17,7 @@ workbook-platform
   web delivery
   API
   database
-  LTI launch
+  Canvas-embedded LTI launch
   grade passback
   attempts and analytics
 ```
@@ -39,7 +39,8 @@ When reviewing these docs, focus on:
 
 - whether the schema protects content version history
 - whether Canvas grade passback has enough audit logging
-- whether standalone and LTI launches share the same workbook runtime cleanly
+- whether Canvas-embedded and standalone launches share the same workbook runtime cleanly
+- whether Canvas iframe delivery constraints are explicit enough for implementation
 - whether student attempts are attached to stable lesson versions
 - whether all interactions can be completed through automatic grading or student self-grading prompts
 - whether content publishing keeps `course-materials` as the source of truth

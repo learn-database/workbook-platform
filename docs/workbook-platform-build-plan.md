@@ -4,8 +4,8 @@
 
 Build an interactive workbook platform for the Learn Database course that can run as:
 
-- a standalone public or private course website
-- a Canvas/LMS-integrated workbook using LTI 1.3
+- a Canvas-embedded workbook using LTI 1.3, where students view lesson content inside Canvas instead of being sent to a separate site by default
+- a standalone public or private course website for preview, public delivery, or non-LMS learners
 - a self-guided, grade-integrated learning tool with student attempts, automatic or self-guided scoring, and Canvas grade passback
 
 The current static `src` folder in the original `dbm-materials` repository should be treated as a prototype for interaction behavior and lesson JSON structure, not as the long-term architecture.
@@ -93,6 +93,10 @@ Recommended stack:
 - Deployment: Docker plus a cloud host
 - LMS integration: LTI 1.3 Advantage, especially Assignment and Grade Services
 
+Primary delivery mode:
+
+Canvas should be treated as the primary student-facing container for LMS sections. The workbook UI is still served by this platform, but Canvas launches should render it in an embedded LTI iframe unless an instructor explicitly chooses an external-window placement. Standalone delivery remains important for preview, testing, public demos, and non-Canvas use.
+
 ## Core Data Flow
 
 ```text
@@ -114,6 +118,30 @@ student responses, grades, analytics
         v
 Canvas via LTI AGS grade passback
 ```
+
+## Canvas Embedded Delivery
+
+For Canvas-integrated sections, the expected student experience is:
+
+```text
+Student opens a Canvas module item or assignment
+Canvas launches the workbook through LTI 1.3
+The lesson renders inside the Canvas page iframe
+The student completes interactions without leaving Canvas
+The platform sends scores back to the Canvas gradebook through LTI AGS
+```
+
+Implementation requirements:
+
+- configure Canvas placements to launch embedded by default, not "load in a new tab"
+- support assignment and module-item launch contexts
+- make the workbook UI responsive inside Canvas iframe widths, including narrower LMS sidebars
+- preserve full standalone routing for previews and non-LMS learners
+- set `Content-Security-Policy frame-ancestors` to allow the approved Canvas domains
+- do not send `X-Frame-Options: DENY` or `SAMEORIGIN` on embedded workbook pages
+- keep authentication, launch validation, role mapping, and grade passback on the backend
+
+The platform should avoid depending on Canvas page scraping or Canvas-specific frontend hacks. Canvas should provide identity, course context, roles, and gradebook line items through the LTI launch and LTI Advantage services.
 
 ## Database Model
 
@@ -240,7 +268,9 @@ Frontend features:
 - sample solution reveal with logging
 - case cards for Lakeside and Cedar Valley Clinic
 - SQL playground
+- Canvas-embedded lesson mode for LTI launches
 - responsive layout for standalone browser use and Canvas iframe use
+- iframe-safe navigation that stays inside the launched lesson context unless an external link is intentional
 
 ## Backend Requirements
 
@@ -296,7 +326,7 @@ grade passback logging
 Grade flow:
 
 ```text
-Canvas assignment launches workbook lesson
+Canvas assignment or module item launches workbook lesson inside Canvas
 Backend validates LTI launch
 Backend maps launch to course, lesson, user, and line item
 Student completes workbook interactions
@@ -331,6 +361,7 @@ The first MVP should include:
 
 ```text
 Standalone login-free preview
+Canvas-embedded lesson launch
 Course/module/lesson navigation
 Versioned lesson content in DB
 Text, choice, multi-select, short answer, essay, self-check interactions
@@ -363,7 +394,7 @@ Recommended first slice:
 Lesson 3.2 Relationships and Cardinality
   source content from course-materials
   published into database
-  rendered in workbook UI
+  rendered in workbook UI inside Canvas and standalone preview
   includes content, choice, short answer, and self-check blocks
   stores student responses
   records self-grading prompts where judgment is required

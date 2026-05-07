@@ -26,7 +26,7 @@ flowchart TB
     Student((Student))
 
     Student --> UC1[Open standalone lesson]
-    Student --> UC2[Launch lesson from Canvas]
+    Student --> UC2[Launch embedded lesson from Canvas]
     Student --> UC3[Read workbook content]
     Student --> UC4[Answer interactive question]
     Student --> UC5[Run SQL query]
@@ -37,7 +37,7 @@ flowchart TB
     Student --> UC10[Reveal solution when allowed]
     Student --> UC11[Self-grade judgment response with prompt]
 
-    UC2 --> LTI[LTI launch validation]
+    UC2 --> LTI[LTI launch validation inside Canvas iframe]
     UC5 --> SQL[SQL execution service]
     UC11 --> Prompt[Rubric, checklist, or sample answer]
     UC8 --> Grade[Grade calculation]
@@ -108,12 +108,13 @@ flowchart TB
     Canvas((Canvas LMS))
 
     Canvas --> UC1[Start OIDC login]
-    Canvas --> UC2[Send LTI launch]
+    Canvas --> UC2[Send embedded LTI launch]
     Canvas --> UC3[Provide course context]
     Canvas --> UC4[Provide user roles]
     Canvas --> UC5[Provide line item for grading]
     Canvas --> UC6[Receive grade passback]
     Canvas --> UC7[Launch instructor preview]
+    Canvas --> UC8[Render workbook inside Canvas page]
 ```
 
 ## High-Level System Use Case Map
@@ -164,7 +165,7 @@ The MVP should implement only these use cases first:
 flowchart TB
     A[Publish one lesson from content source]
     B[Preview lesson standalone]
-    C[Launch lesson from Canvas]
+    C[Launch embedded lesson from Canvas]
     D[Answer interactions]
     E[Save responses]
     F[Self-grade judgment prompts when needed]
