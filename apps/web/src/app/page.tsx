@@ -1,70 +1,107 @@
 import { WORKBOOK_SCHEMA_VERSION } from "@learn-database/workbook-schema";
 
-const foundationItems = [
-  ["Frontend", "Next.js workbook shell"],
-  ["Backend", "NestJS API scaffold"],
-  ["Database", "SQLite local, PostgreSQL production"],
-  ["Schema", `Workbook schema ${WORKBOOK_SCHEMA_VERSION}`],
-];
+const questionButtons = ["1", "2", "3", "4", "5"];
 
-const nextSlices = [
-  {
-    title: "Static Player Reuse",
-    body: "Carry forward the current HTML player concept, question behavior, and JSON schema discipline.",
-  },
-  {
-    title: "Lesson 3.2 Runtime",
-    body: "Import and render Relationships and Cardinality as the first complete vertical slice.",
-  },
-  {
-    title: "Canvas Embedded LTI",
-    body: "Launch the workbook inside Canvas and pass grades back through LTI Advantage.",
-  },
+const checks = [
+  ["Frontend", "Next.js shell"],
+  ["API", "NestJS /health"],
+  ["Local DB", "SQLite"],
+  ["Schema", WORKBOOK_SCHEMA_VERSION],
 ];
 
 export default function Home() {
   return (
-    <main className="shell">
-      <section className="hero">
-        <div className="hero-card">
-          <p className="eyebrow">Learn Database Workbook Platform</p>
-          <h1>Database learning, built as an interactive workbook.</h1>
-          <p className="lede">
-            This scaffold is the foundation for the Canvas-embedded, self-guided
-            course platform. It starts with the static player ideas that already
-            work and moves persistence, grading, and LMS integration into a
-            backend runtime.
-          </p>
+    <main>
+      <nav className="topbar" aria-label="Workbook navigation">
+        <div className="topbar-inner">
+          <span className="brand">Learn Database Workbook</span>
+          <span className="topbar-note">Canvas-embedded runtime scaffold</span>
         </div>
+      </nav>
 
-        <aside className="status-card" aria-label="Build status">
-          <div>
-            <span className="pill">M0 Scaffold</span>
-            <h2>Foundation Check</h2>
-            <ul className="status-list">
-              {foundationItems.map(([label, value]) => (
+      <section className="schema-strip" aria-label="Database schema preview">
+        <div className="container">
+          <span className="strip-label">[Database schema]</span>
+          <code>
+            Student(StudentID, Name, Email) | Session(SessionID, TutorID,
+            StartTime) | Enrollment(StudentID, CourseID)
+          </code>
+        </div>
+      </section>
+
+      <section className="score-strip" aria-label="Question score toolbar">
+        <div className="container score-row">
+          <h1>
+            Questions <span>[Score: scaffold]</span>
+          </h1>
+          <div className="question-buttons" aria-label="Question buttons">
+            {questionButtons.map((item) => (
+              <button key={item} type="button">
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="container lesson-shell">
+        <aside className="lesson-index" aria-label="Lesson list">
+          <h2>Seek Your Challenges</h2>
+          <ol>
+            <li className="active">3.2 Relationships and Cardinality</li>
+            <li>Static player migration</li>
+            <li>Content import check</li>
+          </ol>
+        </aside>
+
+        <article className="question-card">
+          <div className="question-header">
+            <span className="badge">M0 scaffold</span>
+            <span className="schema-version">
+              Workbook schema {WORKBOOK_SCHEMA_VERSION}
+            </span>
+          </div>
+
+          <h2>Workbook runtime foundation</h2>
+          <p>
+            This screen is intentionally shaped like the existing static lesson
+            player: top navigation, schema context, score controls, and a
+            focused question area. The next implementation slice will replace
+            this mock content with imported Lesson 3.2 blocks.
+          </p>
+
+          <div className="prompt-box">
+            <strong>Current build check</strong>
+            <ul>
+              {checks.map(([label, value]) => (
                 <li key={label}>
-                  <strong>{label}</strong>
-                  <span>{value}</span>
+                  <span>{label}</span>
+                  <code>{value}</code>
                 </li>
               ))}
             </ul>
           </div>
-          <p>
-            First target: a runnable monorepo with local SQLite development and
-            production-ready PostgreSQL direction.
-          </p>
-        </aside>
+
+          <label className="answer-label" htmlFor="sample-answer">
+            Short answer
+          </label>
+          <textarea
+            id="sample-answer"
+            readOnly
+            value="The scaffold is ready when the web app, API health endpoint, SQLite migration, and verification scripts all run from the same workspace."
+          />
+
+          <div className="actions">
+            <button type="button" className="primary">
+              Check
+            </button>
+            <button type="button">Show Hint</button>
+            <button type="button">Expected Result</button>
+          </div>
+        </article>
       </section>
 
-      <section className="grid" aria-label="Next build slices">
-        {nextSlices.map((slice) => (
-          <article className="tile" key={slice.title}>
-            <h3>{slice.title}</h3>
-            <p>{slice.body}</p>
-          </article>
-        ))}
-      </section>
+      <footer>You've reached the end of the scaffold preview.</footer>
     </main>
   );
 }
