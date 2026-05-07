@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { WORKBOOK_SCHEMA_VERSION } from "@learn-database/workbook-schema";
 
 const dashboardStats = [
@@ -31,6 +34,8 @@ const buildChecks = [
 ];
 
 export default function Home() {
+  const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
+
   return (
     <main>
       <nav className="topbar" aria-label="Workbook navigation">
@@ -91,8 +96,12 @@ export default function Home() {
             workbook surface, save attempts, and prepare the Canvas launch flow.
           </p>
           <div className="actions">
-            <button type="button" className="primary">
-              Open Preview
+            <button
+              type="button"
+              className="primary"
+              onClick={() => setSelectedLesson("lesson-3.2")}
+            >
+              Open Lesson 3.2
             </button>
             <button type="button">Content Package</button>
             <button type="button">Canvas Setup</button>
@@ -115,88 +124,119 @@ export default function Home() {
         </article>
       </section>
 
-      <section className="schema-strip" aria-label="Database schema preview">
-        <div className="container">
-          <span className="strip-label">[Database schema]</span>
-          <code>
-            Student(StudentID, Name, Email) | Session(SessionID, TutorID,
-            StartTime) | Enrollment(StudentID, CourseID)
-          </code>
-        </div>
-      </section>
-
-      <section className="score-strip" aria-label="Question score toolbar">
-        <div className="container score-row">
-          <h2>
-            Lesson Player Preview <span>[Score: scaffold]</span>
-          </h2>
-          <div className="question-buttons" aria-label="Question buttons">
-            {questionButtons.map((item) => (
-              <button key={item} type="button">
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="container lesson-shell">
-        <aside className="lesson-index" aria-label="Lesson list">
-          <h2>Seek Your Challenges</h2>
-          <ol>
-            <li className="active">3.2 Relationships and Cardinality</li>
-            <li>Static player migration</li>
-            <li>Content import check</li>
-          </ol>
-        </aside>
-
-        <article className="question-card">
-          <div className="question-header">
-            <span className="badge">M0 scaffold</span>
-            <span className="schema-version">
-              Workbook schema {WORKBOOK_SCHEMA_VERSION}
-            </span>
-          </div>
-
-          <h2>Workbook runtime foundation</h2>
+      {!selectedLesson && (
+        <section className="container empty-preview">
+          <h2>No lesson open</h2>
           <p>
-            The dashboard above is the course entry point. This panel previews
-            the lesson-player area that will render imported content blocks,
-            questions, hints, expected results, and self-grading prompts.
+            Choose a lesson from the dashboard to open the workbook player.
+            Until then, the page stays in dashboard mode.
           </p>
+        </section>
+      )}
 
-          <div className="prompt-box">
-            <strong>Current build check</strong>
-            <ul>
-              {buildChecks.map(([label, value]) => (
-                <li key={label}>
-                  <span>{label}</span>
-                  <code>{value}</code>
-                </li>
-              ))}
-            </ul>
-          </div>
+      {selectedLesson && (
+        <>
+          <section
+            className="schema-strip"
+            aria-label="Database schema preview"
+          >
+            <div className="container">
+              <span className="strip-label">[Database schema]</span>
+              <code>
+                Student(StudentID, Name, Email) | Session(SessionID, TutorID,
+                StartTime) | Enrollment(StudentID, CourseID)
+              </code>
+            </div>
+          </section>
 
-          <label className="answer-label" htmlFor="sample-answer">
-            Short answer
-          </label>
-          <textarea
-            id="sample-answer"
-            readOnly
-            value="The scaffold is ready when the dashboard, lesson player preview, API health endpoint, SQLite migration, and verification scripts all run from the same workspace."
-          />
+          <section className="score-strip" aria-label="Question score toolbar">
+            <div className="container score-row">
+              <div>
+                <h2>
+                  Lesson Player Preview <span>[Score: scaffold]</span>
+                </h2>
+                <div className="question-buttons" aria-label="Question buttons">
+                  {questionButtons.map((item) => (
+                    <button key={item} type="button">
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button
+                type="button"
+                className="back-button"
+                onClick={() => setSelectedLesson(null)}
+              >
+                Back to Dashboard
+              </button>
+            </div>
+          </section>
 
-          <div className="actions">
-            <button type="button" className="primary">
-              Check
-            </button>
-            <button type="button">Show Hint</button>
-            <button type="button">Expected Result</button>
-          </div>
-        </article>
-      </section>
+          <section className="container lesson-shell">
+            <aside className="lesson-index" aria-label="Lesson list">
+              <h2>Seek Your Challenges</h2>
+              <ol>
+                <li className="active">3.2 Relationships and Cardinality</li>
+                <li>Static player migration</li>
+                <li>Content import check</li>
+              </ol>
+            </aside>
 
-      <footer>You've reached the end of the scaffold preview.</footer>
+            <article className="question-card">
+              <div className="question-header">
+                <span className="badge">M0 scaffold</span>
+                <span className="schema-version">
+                  Workbook schema {WORKBOOK_SCHEMA_VERSION}
+                </span>
+              </div>
+
+              <h2>Workbook runtime foundation</h2>
+              <p>
+                The dashboard above is the course entry point. This panel
+                previews the lesson-player area that will render imported
+                content blocks, questions, hints, expected results, and
+                self-grading prompts.
+              </p>
+
+              <div className="prompt-box">
+                <strong>Current build check</strong>
+                <ul>
+                  {buildChecks.map(([label, value]) => (
+                    <li key={label}>
+                      <span>{label}</span>
+                      <code>{value}</code>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <label className="answer-label" htmlFor="sample-answer">
+                Short answer
+              </label>
+              <textarea
+                id="sample-answer"
+                readOnly
+                value="The scaffold is ready when the dashboard, lesson player preview, API health endpoint, SQLite migration, and verification scripts all run from the same workspace."
+              />
+
+              <div className="actions">
+                <button type="button" className="primary">
+                  Check
+                </button>
+                <button type="button">Show Hint</button>
+                <button type="button">Expected Result</button>
+              </div>
+            </article>
+          </section>
+        </>
+      )}
+
+      <footer>
+        {selectedLesson
+          ? "You've reached the end of the scaffold preview."
+          : "Select a lesson to open the workbook player."}
+      </footer>
     </main>
   );
 }
