@@ -1,0 +1,30 @@
+{
+  "name": "@learn-database/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "npm run db:generate && tsc -p tsconfig.build.json",
+    "lint": "eslint .",
+    "typecheck": "npm run db:generate && tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "db:generate": "node scripts/prisma-local.mjs generate --schema prisma/schema.prisma",
+    "db:migrate": "node scripts/prisma-local.mjs migrate dev --name init --schema prisma/schema.prisma",
+    "db:reset": "node scripts/prisma-local.mjs migrate reset --force --schema prisma/schema.prisma",
+    "db:health": "node scripts/health.mjs",
+    "db:generate:postgres": "node scripts/prisma-postgres.mjs generate --schema prisma/schema.postgresql.prisma",
+    "db:push:postgres": "node scripts/prisma-postgres.mjs db push --schema prisma/schema.postgresql.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.0"
+  }
+}

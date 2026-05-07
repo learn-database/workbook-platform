@@ -1,0 +1,42 @@
+{
+  "name": "learn-database-workbook-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Interactive workbook platform for the Learn Database course.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run db:generate && npm run build:packages && concurrently \"npm:dev:web\" \"npm:dev:api\"",
+    "dev:web": "npm run dev -w @learn-database/web",
+    "dev:api": "npm run dev -w @learn-database/api",
+    "build": "npm run db:generate && npm run build:packages && npm run build -w @learn-database/api && npm run build -w @learn-database/web",
+    "build:packages": "npm run build -w @learn-database/workbook-schema && npm run build -w @learn-database/lti && npm run build -w @learn-database/db",
+    "lint": "eslint .",
+    "typecheck": "npm run db:generate && npm run build:packages && npm run typecheck --workspaces --if-present",
+    "test": "npm run db:generate && npm run test --workspaces --if-present",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "db:generate": "npm run db:generate -w @learn-database/db",
+    "db:migrate": "npm run db:migrate -w @learn-database/db",
+    "db:reset": "npm run db:reset -w @learn-database/db",
+    "db:health": "npm run db:health -w @learn-database/db",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run db:migrate && npm run db:health"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "concurrently": "^9.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^4.1.5"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=11.0.0"
+  }
+}
