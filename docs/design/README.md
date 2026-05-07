@@ -41,4 +41,5 @@ When reviewing these docs, focus on:
 - whether Canvas grade passback has enough audit logging
 - whether standalone and LTI launches share the same workbook runtime cleanly
 - whether student attempts are attached to stable lesson versions
+- whether all interactions can be completed through automatic grading or student self-grading prompts
 - whether content publishing keeps `course-materials` as the source of truth

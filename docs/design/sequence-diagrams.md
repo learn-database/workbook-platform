@@ -43,7 +43,7 @@ sequenceDiagram
     Web-->>Student: Render workbook inside Canvas
 ```
 
-## Save Response And Auto-Score
+## Save Response And Automatic Score
 
 ```mermaid
 sequenceDiagram
@@ -64,6 +64,29 @@ sequenceDiagram
     DB-->>API: Saved response and current score
     API-->>Web: Feedback and score update
     Web-->>Student: Show feedback / unlock next block
+```
+
+## Self-Graded Interaction
+
+```mermaid
+sequenceDiagram
+    actor Student
+    participant Web as Next.js Web App
+    participant API as NestJS API
+    participant DB as PostgreSQL
+
+    Student->>Web: Submit written/design response
+    Web->>API: POST response
+    API->>DB: Save Response as saved
+    API->>DB: Load GradingPrompt and sample criteria
+    DB-->>API: Prompt, rubric, checklist, sample answer
+    API-->>Web: Self-grading prompt payload
+    Web-->>Student: Show rubric/checklist/sample answer
+    Student->>Web: Record self-score or self-check
+    Web->>API: POST self-grade
+    API->>DB: Save selfGradeJson and score
+    API->>DB: Update Attempt score and audit prompt reveal
+    API-->>Web: Current score and feedback
 ```
 
 ## SQL Interaction Through Backend Proxy
@@ -110,7 +133,7 @@ sequenceDiagram
     Web-->>Student: Show submitted status and score
 ```
 
-## Manual Review And Grade Adjustment
+## Instructor Monitoring And Exceptional Override
 
 ```mermaid
 sequenceDiagram
@@ -120,17 +143,17 @@ sequenceDiagram
     participant DB as PostgreSQL
     participant Canvas as Canvas AGS
 
-    Instructor->>Web: Open attempts needing review
-    Web->>API: GET review queue
-    API->>DB: Load responses marked needs_review
-    DB-->>API: Attempt and response data
-    API-->>Web: Review queue
-    Instructor->>Web: Enter score and feedback
-    Web->>API: POST manual grade update
-    API->>DB: Save score event and updated GradeResult
+    Instructor->>Web: Open attempt analytics or passback failures
+    Web->>API: GET attempts and grade status
+    API->>DB: Load attempts, self-grades, and passback logs
+    DB-->>API: Monitoring data
+    API-->>Web: Attempts dashboard
+    Instructor->>Web: Request exceptional score override if needed
+    Web->>API: POST override with reason
+    API->>DB: Save audited ScoreEvent and updated GradeResult
     API->>Canvas: POST updated score if LTI line item exists
     Canvas-->>API: Passback response
-    API->>DB: Save GradePassbackLog
+    API->>DB: Save GradePassbackLog and AuditEvent
     API-->>Web: Updated grade status
 ```
 

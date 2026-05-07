@@ -6,7 +6,7 @@ Build an interactive workbook platform for the Learn Database course that can ru
 
 - a standalone public or private course website
 - a Canvas/LMS-integrated workbook using LTI 1.3
-- a grade-integrated learning tool with student attempts, scoring, and Canvas grade passback
+- a self-guided, grade-integrated learning tool with student attempts, automatic or self-guided scoring, and Canvas grade passback
 
 The current static `src` folder in the original `dbm-materials` repository should be treated as a prototype for interaction behavior and lesson JSON structure, not as the long-term architecture.
 
@@ -185,6 +185,30 @@ revision_prompt
 project_checkpoint
 ```
 
+## Self-Guided Grading Model
+
+The course should be self-guided. Every interaction should be one of these two grading modes:
+
+```text
+automatic
+  The platform calculates the score from a key, expected SQL result, selected options,
+  matching map, checklist completion, or exact/normalized short answer.
+
+self_graded
+  The student submits a response, compares it to a grading prompt, rubric,
+  checklist, or sample answer, and records a self-score or completion judgment.
+```
+
+Manual instructor grading should not be part of the normal workflow. Instructor views may support monitoring, analytics, troubleshooting, and exceptional overrides, but the course should not depend on instructor grading to complete a lesson.
+
+Self-graded interactions must include:
+
+- a grading prompt or rubric written for students
+- a sample answer, checklist, or comparison criteria
+- a clear self-score or self-check action
+- an audit record that the grading prompt or solution was shown
+- grade passback based on the automatic score or student-confirmed self-grade
+
 ## Frontend Requirements
 
 Core student screens:
@@ -202,7 +226,7 @@ Core instructor screens:
 /instructor/course/:courseId
 /instructor/attempts
 /instructor/lesson-performance
-/instructor/grade-review
+/instructor/grade-passback
 ```
 
 Frontend features:
@@ -227,9 +251,10 @@ Core API responsibilities:
 - record student launches
 - create and resume attempts
 - save responses
-- score auto-gradable interactions
+- score automatic interactions
+- record self-graded interactions using structured grading prompts
 - queue or execute Canvas grade passback
-- provide instructor review views
+- provide instructor monitoring and grade-passback troubleshooting views
 - expose content import and validation endpoints or scripts
 
 The backend owns security-sensitive work. The frontend should not directly call external SQL or LTI services.
@@ -275,6 +300,7 @@ Canvas assignment launches workbook lesson
 Backend validates LTI launch
 Backend maps launch to course, lesson, user, and line item
 Student completes workbook interactions
+Student self-grades judgment interactions when required
 Backend calculates score
 Backend sends score to Canvas through LTI AGS
 Backend logs grade passback result
@@ -311,6 +337,7 @@ Text, choice, multi-select, short answer, essay, self-check interactions
 SQL question support through backend wrapper
 Student attempt storage
 Basic score calculation
+Self-grading prompts for written/design-judgment interactions
 Canvas LTI launch
 Canvas grade passback for one assignment
 ```
@@ -339,6 +366,7 @@ Lesson 3.2 Relationships and Cardinality
   rendered in workbook UI
   includes content, choice, short answer, and self-check blocks
   stores student responses
+  records self-grading prompts where judgment is required
   calculates score
   passes grade back to Canvas
 ```
@@ -362,7 +390,8 @@ Migration order:
 After the MVP:
 
 - instructor dashboards
-- manual grading and rubric review
+- self-grading prompt analytics
+- exceptional instructor score override with audit log
 - content preview workflow
 - LTI Deep Linking
 - richer analytics

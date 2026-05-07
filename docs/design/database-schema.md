@@ -7,7 +7,7 @@ The database must support:
 - versioned course content
 - standalone and LTI-based launches
 - student attempts and responses
-- automatic and manual grading
+- automatic grading and self-guided grading with grading prompts
 - Canvas grade passback through LTI Assignment and Grade Services
 - content publishing from `learn-database/course-materials`
 - auditability for launches, submissions, solution reveals, and grade passback
@@ -25,6 +25,7 @@ Content
   InteractionOption
   Rubric
   RubricCriterion
+  GradingPrompt
   CaseStudy
 
 Identity and Enrollment
@@ -91,6 +92,7 @@ erDiagram
     ContentBlock ||--o| Interaction : may_have
     Interaction ||--o{ InteractionOption : has
     Interaction ||--o{ RubricCriterion : assessed_by
+    Interaction ||--o| GradingPrompt : guides_self_grading
     CourseVersion ||--o{ CaseStudy : includes
 ```
 
@@ -246,10 +248,33 @@ contentBlockId
 interactionType     choice | multi_select | short_answer | essay | sql | sql_choice | sql_short_answer | checklist | matching | matrix
 promptMarkdown
 points
-scoringMode         automatic | manual | self_check | hybrid
+scoringMode         automatic | self_graded
 solutionJson
 feedbackJson
+gradingPromptId
 settingsJson
+```
+
+Interactions should not require normal instructor grading. Written responses,
+design-judgment prompts, reflections, and project checkpoints should use
+`self_graded` mode with a student-facing grading prompt, rubric, checklist, or
+sample answer.
+
+### `GradingPrompt`
+
+Stores the self-grading guidance shown to students.
+
+Key fields:
+
+```text
+id
+interactionId
+promptMarkdown
+sampleAnswerMarkdown
+rubricJson
+selfScoreMode       complete_incomplete | points | checklist
+showBeforeSubmit
+showAfterSubmit
 ```
 
 ### `InteractionOption`
@@ -332,8 +357,10 @@ interactionId
 responseJson
 score
 maxScore
-status              unanswered | saved | correct | incorrect | needs_review | self_checked
+status              unanswered | saved | correct | incorrect | self_checked | self_scored
 feedbackJson
+selfGradeJson
+gradingPromptShownAt
 createdAt
 updatedAt
 ```
@@ -351,7 +378,7 @@ score
 maxScore
 scoreGiven
 scoreMaximum
-gradingStatus       pending | calculated | manually_adjusted | passback_sent | passback_failed
+gradingStatus       pending | calculated | self_graded | passback_sent | passback_failed
 calculatedAt
 updatedAt
 ```
@@ -505,5 +532,6 @@ finishedAt
 - Attempts reference the versioned lesson, not a mutable lesson draft.
 - Canvas grade passback is logged separately from grade calculation.
 - LTI launch data is stored enough to debug role, context, and line-item mapping issues.
-- Written and design-judgment responses can be marked for manual review.
+- Written and design-judgment responses use self-grading prompts rather than normal instructor grading.
+- Exceptional instructor score overrides, if added later, must be audit-only and should not be the standard course flow.
 - Content authoring remains in `course-materials`; the database stores published runtime content.

@@ -35,9 +35,11 @@ flowchart TB
     Student --> UC8[Submit lesson attempt]
     Student --> UC9[View score]
     Student --> UC10[Reveal solution when allowed]
+    Student --> UC11[Self-grade judgment response with prompt]
 
     UC2 --> LTI[LTI launch validation]
     UC5 --> SQL[SQL execution service]
+    UC11 --> Prompt[Rubric, checklist, or sample answer]
     UC8 --> Grade[Grade calculation]
     UC8 --> Passback[Canvas grade passback when launched from Canvas]
 ```
@@ -51,15 +53,15 @@ flowchart TB
     Instructor --> UC1[Preview active course version]
     Instructor --> UC2[Launch as Canvas instructor]
     Instructor --> UC3[Review student attempts]
-    Instructor --> UC4[Review written responses]
-    Instructor --> UC5[Adjust score manually]
+    Instructor --> UC4[Monitor self-grading patterns]
+    Instructor --> UC5[Override score only as an exception]
     Instructor --> UC6[View question performance]
     Instructor --> UC7[Identify incomplete attempts]
     Instructor --> UC8[Resend grade passback]
     Instructor --> UC9[Export attempt data]
 
-    UC4 --> Manual[Manual grading workflow]
-    UC5 --> GradeResult[Update GradeResult]
+    UC4 --> Analytics[Self-guided course analytics]
+    UC5 --> GradeResult[Audited exceptional GradeResult update]
     UC8 --> Canvas[Canvas AGS]
 ```
 
@@ -129,8 +131,9 @@ flowchart LR
         UC_Render[Render lesson]
         UC_Respond[Record responses]
         UC_Score[Calculate scores]
+        UC_SelfGrade[Guide student self-grading]
         UC_Passback[Pass grades to Canvas]
-        UC_Review[Review attempts]
+        UC_Review[Monitor attempts]
         UC_Publish[Publish course content]
         UC_Admin[Configure integrations]
     end
@@ -138,16 +141,17 @@ flowchart LR
     Student --> UC_Launch
     Student --> UC_Render
     Student --> UC_Respond
+    Student --> UC_SelfGrade
     Student --> UC_Score
 
     Instructor --> UC_Review
-    Instructor --> UC_Score
 
     Author --> UC_Publish
     Admin --> UC_Admin
 
     Canvas --> UC_Launch
     UC_Passback --> Canvas
+    UC_SelfGrade --> UC_Score
     UC_Score --> UC_Passback
     UC_Publish --> UC_Render
 ```
@@ -163,8 +167,9 @@ flowchart TB
     C[Launch lesson from Canvas]
     D[Answer interactions]
     E[Save responses]
-    F[Calculate score]
-    G[Pass grade to Canvas]
+    F[Self-grade judgment prompts when needed]
+    G[Calculate score]
+    H[Pass grade to Canvas]
 
     A --> B
     B --> D
@@ -172,6 +177,7 @@ flowchart TB
     D --> E
     E --> F
     F --> G
+    G --> H
 ```
 
 Recommended first lesson for MVP:
@@ -184,5 +190,6 @@ Reason:
 
 - it exercises content blocks, choice questions, short answers, and self-checks
 - it does not require full SQL sandboxing
+- it can test the self-grading prompt workflow for design-judgment responses
 - it supports the Lakeside/clinic relationship-pattern strategy
 - it gives enough grading behavior to test Canvas passback
