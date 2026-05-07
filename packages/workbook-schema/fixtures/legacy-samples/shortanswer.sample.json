@@ -1,0 +1,14 @@
+{
+  "id": 0,
+  "type": "short ansawer",
+  "prompt": "prompt",
+  "points": 0,
+  "response": "response",
+  "solution": 0,
+  "hint": "hint",
+  "feedback": "feedback",
+  "feedback_correct": "feedback_correct",
+  "feedback_incorrect": "feedback_incorrect",
+  "enable_showkeys": false,
+  "bonus": false
+}

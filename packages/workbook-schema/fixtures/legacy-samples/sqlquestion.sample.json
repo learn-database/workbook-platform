@@ -1,0 +1,17 @@
+{
+  "id": 0,
+  "type": "sql",
+  "prompt": "prompt",
+  "solution": {
+    "columns": [""],
+    "values": []
+  },
+  "points": 0,
+  "response": "response",
+  "hint": "hint",
+  "feedback": "feedback",
+  "feedback_correct": "feedback_correct",
+  "feedback_incorrect": "feedback_incorrect",
+  "enable_showkeys": false,
+  "bonus": false
+}

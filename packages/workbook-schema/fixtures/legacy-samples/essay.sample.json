@@ -1,0 +1,13 @@
+{
+  "id": 0,
+  "type": "essay",
+  "prompt": "prompt",
+  "solution": "solution",
+  "points": 0,
+  "response": "response",
+  "hint": "hint",
+  "feedback": "feedback",
+  "feedback_correct": "feedback_correct",
+  "feedback_incorrect": "feedback_incorrect",
+  "bonus": false
+}
