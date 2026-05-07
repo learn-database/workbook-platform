@@ -1,0 +1,19 @@
+{
+  "id": 0,
+  "type": "multiple answers",
+  "prompt": "prompt",
+  "options": [
+    {
+      "id": 0,
+      "text": "text"
+    }
+  ],
+  "solution": [0],
+  "points": 0,
+  "response": [],
+  "hint": "hint",
+  "feedback": "feedback",
+  "feedback_correct": "feedback_correct",
+  "feedback_incorrect": "feedback_incorrect",
+  "bonus": false
+}
