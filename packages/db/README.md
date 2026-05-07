@@ -14,6 +14,7 @@ Production should use PostgreSQL. The PostgreSQL parity schema is kept in
 differences before release:
 
 ```bash
+npm run db:validate:postgres
 DATABASE_URL="postgresql://user:password@host:5432/learn_database" npm run db:push:postgres
 ```
 
