@@ -1,12 +1,33 @@
 import { WORKBOOK_SCHEMA_VERSION } from "@learn-database/workbook-schema";
 
+const dashboardStats = [
+  ["Course", "Learn Database"],
+  ["Runtime", "SQLite local"],
+  ["Canvas", "LTI scaffold"],
+  ["Schema", WORKBOOK_SCHEMA_VERSION],
+];
+
+const moduleRows = [
+  ["M0", "Platform foundation", "In review"],
+  ["M1", "Content import and schema", "Ready next"],
+  ["M2", "Lesson runtime", "Backlog"],
+  ["M3", "Canvas embedded LTI", "Backlog"],
+];
+
+const activityRows = [
+  ["API health", "ok"],
+  ["Web shell", "ok"],
+  ["Local migration", "ok"],
+  ["PostgreSQL parity", "planned"],
+];
+
 const questionButtons = ["1", "2", "3", "4", "5"];
 
-const checks = [
+const buildChecks = [
   ["Frontend", "Next.js shell"],
   ["API", "NestJS /health"],
   ["Local DB", "SQLite"],
-  ["Schema", WORKBOOK_SCHEMA_VERSION],
+  ["CI", "verify workflow"],
 ];
 
 export default function Home() {
@@ -15,9 +36,84 @@ export default function Home() {
       <nav className="topbar" aria-label="Workbook navigation">
         <div className="topbar-inner">
           <span className="brand">Learn Database Workbook</span>
-          <span className="topbar-note">Canvas-embedded runtime scaffold</span>
+          <span className="topbar-note">Dashboard · Canvas runtime</span>
         </div>
       </nav>
+
+      <section className="dashboard-hero">
+        <div className="container">
+          <div>
+            <p className="section-label">Course dashboard</p>
+            <h1>Build, preview, and launch workbook lessons.</h1>
+            <p>
+              The dashboard is the control surface for the standalone site and
+              the Canvas-embedded workbook. It keeps the old lesson-player
+              rhythm, but gives students and instructors a place to start.
+            </p>
+          </div>
+
+          <div className="stat-grid" aria-label="Platform status">
+            {dashboardStats.map(([label, value]) => (
+              <div className="stat-card" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="container dashboard-grid">
+        <article className="panel module-panel">
+          <header className="panel-header">
+            <h2>Course Modules</h2>
+            <span>v4 MVP path</span>
+          </header>
+          <div className="module-list">
+            {moduleRows.map(([module, title, status]) => (
+              <div className="module-row" key={module}>
+                <strong>{module}</strong>
+                <span>{title}</span>
+                <em>{status}</em>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="panel current-panel">
+          <header className="panel-header">
+            <h2>Current Lesson</h2>
+            <span>first vertical slice</span>
+          </header>
+          <h3>3.2 Relationships and Cardinality</h3>
+          <p>
+            Next target: import real Lesson 3.2 content, render it in this
+            workbook surface, save attempts, and prepare the Canvas launch flow.
+          </p>
+          <div className="actions">
+            <button type="button" className="primary">
+              Open Preview
+            </button>
+            <button type="button">Content Package</button>
+            <button type="button">Canvas Setup</button>
+          </div>
+        </article>
+
+        <article className="panel activity-panel">
+          <header className="panel-header">
+            <h2>Runtime Checks</h2>
+            <span>M0 scaffold</span>
+          </header>
+          <ul>
+            {activityRows.map(([label, status]) => (
+              <li key={label}>
+                <span>{label}</span>
+                <code>{status}</code>
+              </li>
+            ))}
+          </ul>
+        </article>
+      </section>
 
       <section className="schema-strip" aria-label="Database schema preview">
         <div className="container">
@@ -31,9 +127,9 @@ export default function Home() {
 
       <section className="score-strip" aria-label="Question score toolbar">
         <div className="container score-row">
-          <h1>
-            Questions <span>[Score: scaffold]</span>
-          </h1>
+          <h2>
+            Lesson Player Preview <span>[Score: scaffold]</span>
+          </h2>
           <div className="question-buttons" aria-label="Question buttons">
             {questionButtons.map((item) => (
               <button key={item} type="button">
@@ -64,16 +160,15 @@ export default function Home() {
 
           <h2>Workbook runtime foundation</h2>
           <p>
-            This screen is intentionally shaped like the existing static lesson
-            player: top navigation, schema context, score controls, and a
-            focused question area. The next implementation slice will replace
-            this mock content with imported Lesson 3.2 blocks.
+            The dashboard above is the course entry point. This panel previews
+            the lesson-player area that will render imported content blocks,
+            questions, hints, expected results, and self-grading prompts.
           </p>
 
           <div className="prompt-box">
             <strong>Current build check</strong>
             <ul>
-              {checks.map(([label, value]) => (
+              {buildChecks.map(([label, value]) => (
                 <li key={label}>
                   <span>{label}</span>
                   <code>{value}</code>
@@ -88,7 +183,7 @@ export default function Home() {
           <textarea
             id="sample-answer"
             readOnly
-            value="The scaffold is ready when the web app, API health endpoint, SQLite migration, and verification scripts all run from the same workspace."
+            value="The scaffold is ready when the dashboard, lesson player preview, API health endpoint, SQLite migration, and verification scripts all run from the same workspace."
           />
 
           <div className="actions">

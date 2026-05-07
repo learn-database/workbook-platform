@@ -11,6 +11,7 @@
   --blue-dark: #0a58ca;
   --green: #198754;
   --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --soft-blue: #f1f6ff;
 }
 
 * {
@@ -69,6 +70,183 @@ code {
   font-size: 0.9rem;
 }
 
+.dashboard-hero {
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(13, 110, 253, 0.08), transparent 40%),
+    var(--paper);
+}
+
+.dashboard-hero .container {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 1.25rem;
+  padding: 1.4rem 0;
+}
+
+.section-label {
+  margin: 0 0 0.35rem;
+  color: var(--blue-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dashboard-hero h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  line-height: 1.1;
+}
+
+.dashboard-hero p {
+  max-width: 62ch;
+  margin: 0.7rem 0 0;
+  color: #495057;
+  line-height: 1.55;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.stat-card,
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 0.375rem;
+  background: var(--paper);
+  box-shadow: 0 0.15rem 0.35rem rgba(0, 0, 0, 0.05);
+}
+
+.stat-card {
+  display: grid;
+  align-content: center;
+  min-height: 5rem;
+  padding: 0.85rem;
+}
+
+.stat-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.stat-card strong {
+  margin-top: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.95fr) minmax(320px, 1.35fr) minmax(
+      240px,
+      0.85fr
+    );
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.panel {
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--dark-2);
+  padding: 0.8rem 1rem;
+  color: white;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.panel-header span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+}
+
+.module-list {
+  display: grid;
+}
+
+.module-row {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: 0.35rem 0.7rem;
+  border-top: 1px solid var(--line);
+  padding: 0.85rem 1rem;
+}
+
+.module-row:first-child {
+  border-top: 0;
+}
+
+.module-row strong {
+  grid-row: span 2;
+  width: fit-content;
+  border-radius: 0.35rem;
+  background: var(--soft-blue);
+  padding: 0.25rem 0.45rem;
+  color: var(--blue-dark);
+}
+
+.module-row em {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-style: normal;
+}
+
+.current-panel {
+  padding-bottom: 1rem;
+}
+
+.current-panel h3,
+.current-panel p,
+.current-panel .actions {
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+.current-panel h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.current-panel p {
+  max-width: 62ch;
+  color: #495057;
+  line-height: 1.55;
+}
+
+.activity-panel ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 1rem;
+  list-style: none;
+}
+
+.activity-panel li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.55rem;
+}
+
+.activity-panel li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
 .schema-strip {
   max-height: 210px;
   overflow: auto;
@@ -112,13 +290,13 @@ code {
   padding: 0.75rem 0;
 }
 
-.score-row h1 {
+.score-row h2 {
   margin: 0 0 0.6rem;
   font-size: 1.35rem;
   font-weight: 600;
 }
 
-.score-row h1 span {
+.score-row h2 span {
   font-weight: 400;
 }
 
@@ -156,14 +334,6 @@ code {
   padding: 1.25rem 0 3rem;
 }
 
-.lesson-index,
-.question-card {
-  border: 1px solid var(--line);
-  border-radius: 0.375rem;
-  background: var(--paper);
-  box-shadow: 0 0.15rem 0.35rem rgba(0, 0, 0, 0.05);
-}
-
 .lesson-index {
   align-self: start;
   overflow: hidden;
@@ -190,11 +360,15 @@ code {
 
 .lesson-index .active {
   border-left: 4px solid var(--blue);
-  background: #f1f6ff;
+  background: var(--soft-blue);
   font-weight: 700;
 }
 
 .question-card {
+  border: 1px solid var(--line);
+  border-radius: 0.375rem;
+  background: var(--paper);
+  box-shadow: 0 0.15rem 0.35rem rgba(0, 0, 0, 0.05);
   padding: 1.25rem;
 }
 
@@ -290,7 +464,8 @@ footer {
 }
 
 @media (max-width: 760px) {
-  .topbar-inner,
+  .dashboard-hero .container,
+  .dashboard-grid,
   .lesson-shell {
     display: block;
   }
@@ -301,6 +476,11 @@ footer {
 
   .lesson-index {
     margin-bottom: 1rem;
+  }
+
+  .stat-grid,
+  .panel {
+    margin-top: 1rem;
   }
 
   .prompt-box li {
