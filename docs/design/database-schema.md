@@ -52,7 +52,35 @@ Publishing and Audit
   AuditEvent
 ```
 
-## Entity Relationship Diagram
+## Entity Relationship Diagrams
+
+The schema is shown in several focused diagrams to avoid line overlap. Use the
+high-level map first, then review the focused diagrams for table-level
+relationships.
+
+### High-Level Schema Map
+
+```mermaid
+flowchart LR
+    Content["Content Versioning<br/>Course, CourseVersion, Module, Lesson, Blocks, Interactions"]
+    Identity["Identity and Enrollment<br/>User, CourseEnrollment"]
+    LTI["LTI Integration<br/>Platform, Deployment, Context, LineItem, Launch"]
+    Attempts["Attempts and Grading<br/>Attempt, Response, ScoreEvent, GradeResult"]
+    Publish["Publishing and Audit<br/>ContentPackage, PublishRun, AuditEvent"]
+    Canvas["Canvas LMS"]
+    Authoring["course-materials repo"]
+
+    Authoring --> Publish
+    Publish --> Content
+    Identity --> Attempts
+    Content --> Attempts
+    LTI --> Attempts
+    Attempts --> Canvas
+    LTI <--> Canvas
+    Publish --> Attempts
+```
+
+### Content Versioning ERD
 
 ```mermaid
 erDiagram
@@ -64,10 +92,21 @@ erDiagram
     Interaction ||--o{ InteractionOption : has
     Interaction ||--o{ RubricCriterion : assessed_by
     CourseVersion ||--o{ CaseStudy : includes
+```
 
+### Identity And Enrollment ERD
+
+```mermaid
+erDiagram
     User ||--o{ CourseEnrollment : has
     Course ||--o{ CourseEnrollment : enrolls
+    Course ||--o{ CourseVersion : has
+```
 
+### LTI Launch ERD
+
+```mermaid
+erDiagram
     LtiPlatform ||--o{ LtiDeployment : has
     LtiDeployment ||--o{ LtiRegistration : has
     LtiDeployment ||--o{ LtiContext : launches
@@ -78,20 +117,34 @@ erDiagram
     Lesson ||--o{ Launch : opens
     LtiContext ||--o{ Launch : provides_context
     LtiLineItem ||--o{ Launch : may_grade
+```
 
+### Attempts And Grading ERD
+
+```mermaid
+erDiagram
+    User ||--o{ Launch : starts
     User ||--o{ Attempt : submits
-    Lesson ||--o{ Attempt : attempted
-    CourseVersion ||--o{ Attempt : versioned_against
     Launch ||--o{ Attempt : creates_or_resumes
+    CourseVersion ||--o{ Attempt : versioned_against
+    Lesson ||--o{ Attempt : attempted
+
     Attempt ||--o{ Response : contains
     Interaction ||--o{ Response : answered_by
     Attempt ||--o{ ScoreEvent : records
     Attempt ||--o| GradeResult : produces
+
     GradeResult ||--o{ GradePassbackLog : sent_as
     LtiLineItem ||--o{ GradePassbackLog : receives
+```
 
+### Publishing And Audit ERD
+
+```mermaid
+erDiagram
     ContentPackage ||--o{ PublishRun : imported_by
     PublishRun ||--o| CourseVersion : creates
+
     User ||--o{ AuditEvent : triggers
     CourseVersion ||--o{ AuditEvent : concerns
     Attempt ||--o{ AuditEvent : may_concern
