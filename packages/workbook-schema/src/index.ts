@@ -76,6 +76,7 @@ export interface BaseWorkbookInteraction {
   prompt?: string;
   caseRef?: string;
   scoring?: ScoringConfig;
+  metadata?: JsonValue;
 }
 
 export interface ContentBlockInteraction extends BaseWorkbookInteraction {

@@ -337,11 +337,36 @@ code {
   font-weight: 700;
 }
 
+.module-section {
+  padding: 1rem 0 1.5rem;
+}
+
+.module-section-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.module-section-header h2 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.module-section-header > span {
+  border-radius: 999px;
+  background: var(--soft-blue);
+  padding: 0.35rem 0.7rem;
+  color: var(--blue-dark);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
 .module-card-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
-  padding: 1rem 0 1.5rem;
 }
 
 .student-module-card {
@@ -361,10 +386,6 @@ code {
     var(--paper);
 }
 
-.student-module-card.locked {
-  opacity: 0.72;
-}
-
 .student-module-card h2 {
   margin: 0;
   font-size: 1.35rem;
@@ -374,6 +395,50 @@ code {
   margin: 0;
   color: #495057;
   line-height: 1.55;
+}
+
+.future-modules {
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.72);
+  margin-top: 1rem;
+  padding: 0.85rem;
+}
+
+.future-modules summary {
+  color: var(--blue-dark);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.future-module-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-top: 0.85rem;
+}
+
+.future-module-list article {
+  display: grid;
+  gap: 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: #fbfcfe;
+  padding: 0.75rem;
+}
+
+.future-module-list span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.future-module-list em {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-style: normal;
 }
 
 .lesson-card-grid {
@@ -799,6 +864,14 @@ button:disabled {
   font-weight: 700;
 }
 
+.badge-reading {
+  background: var(--green);
+}
+
+.badge-case {
+  background: var(--blue-dark);
+}
+
 .schema-version {
   color: var(--muted);
   font-size: 0.9rem;
@@ -919,6 +992,41 @@ button:disabled {
     var(--paper);
 }
 
+.case-card-block {
+  background:
+    linear-gradient(135deg, rgba(13, 110, 253, 0.1), transparent 38%),
+    var(--paper);
+}
+
+.interaction-card {
+  background:
+    linear-gradient(135deg, rgba(13, 110, 253, 0.05), transparent 32%),
+    var(--paper);
+}
+
+.checklist-card {
+  background:
+    linear-gradient(135deg, rgba(25, 135, 84, 0.08), transparent 35%),
+    var(--paper);
+}
+
+.design-judgment-card,
+.relationship-pattern-card {
+  background:
+    linear-gradient(135deg, rgba(255, 193, 7, 0.16), transparent 35%),
+    var(--paper);
+}
+
+.project-checkpoint-card {
+  border-color: rgba(25, 135, 84, 0.32);
+}
+
+.sql-card {
+  background:
+    linear-gradient(135deg, rgba(33, 37, 41, 0.08), transparent 35%),
+    var(--paper);
+}
+
 .prompt-box {
   overflow: auto;
   border: 1px solid #b6d8f2;
@@ -954,6 +1062,14 @@ button:disabled {
   font-weight: 700;
 }
 
+.short-answer-input {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  background: white;
+  padding: 0.75rem;
+}
+
 .options-field {
   display: grid;
   gap: 0.65rem;
@@ -983,6 +1099,50 @@ button:disabled {
   margin-top: 0.2rem;
 }
 
+.judgment-box,
+.pattern-box,
+.matrix-preview,
+.matching-preview,
+.sql-workspace {
+  border: 1px solid #cfe2ff;
+  border-radius: 0.375rem;
+  background: #f6faff;
+  margin: 1rem 0;
+  padding: 0.9rem 1rem;
+}
+
+.judgment-box p,
+.pattern-box p,
+.matrix-preview p,
+.matching-preview p {
+  margin-bottom: 0;
+}
+
+.matching-preview {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.matching-preview label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.matching-preview select {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 0.35rem;
+  background: white;
+  padding: 0.55rem;
+}
+
+.sql-workspace textarea {
+  min-height: 10rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
 .grading-prompt {
   border: 1px solid #cfe2ff;
   border-radius: 0.375rem;
@@ -991,15 +1151,95 @@ button:disabled {
   padding: 0.8rem 1rem;
 }
 
-.grading-prompt summary {
+.support-panels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.support-pill {
+  border: 1px solid #ffe69c;
+  border-radius: 999px;
+  background: #fff8db;
+  padding: 0.35rem 0.7rem;
+  color: #664d03;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.support-panel,
+.sample-solution-panel,
+.expected-result-panel {
+  flex: 1 1 100%;
+  border: 1px solid #cfe2ff;
+  border-radius: 0.375rem;
+  background: #f6faff;
+  padding: 0.8rem 1rem;
+}
+
+.sample-solution-panel {
+  border-color: rgba(25, 135, 84, 0.32);
+  background: #f4fbf7;
+  margin: 1rem 0;
+}
+
+.expected-result-panel {
+  margin: 1rem 0;
+}
+
+.grading-prompt summary,
+.support-panel summary,
+.sample-solution-panel summary,
+.expected-result-panel summary {
   color: var(--blue-dark);
   cursor: pointer;
   font-weight: 700;
 }
 
-.grading-prompt p {
+.grading-prompt p,
+.support-panel p,
+.sample-solution-panel p,
+.expected-result-panel p {
   margin-top: 0.75rem;
   margin-bottom: 0;
+}
+
+.matrix-table,
+.expected-result-table {
+  overflow-x: auto;
+  margin-top: 0.75rem;
+}
+
+.matrix-table table,
+.expected-result-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.matrix-table th,
+.matrix-table td,
+.expected-result-table th,
+.expected-result-table td {
+  border: 1px solid #d7e5f5;
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+}
+
+.matrix-table th,
+.expected-result-table th {
+  background: #edf6ff;
+  color: var(--ink);
+}
+
+.expected-result-panel pre {
+  overflow-x: auto;
+  border-radius: 0.35rem;
+  background: #172033;
+  margin: 0.8rem 0 0;
+  padding: 0.85rem;
+  color: white;
 }
 
 textarea {
@@ -1034,6 +1274,7 @@ footer {
   .lesson-shell,
   .student-summary,
   .instructor-metrics,
+  .future-module-list,
   .module-card-grid,
   .lesson-card-grid {
     display: block;
@@ -1062,5 +1303,9 @@ footer {
 
   .prompt-box li {
     display: grid;
+  }
+
+  .matching-preview label {
+    grid-template-columns: 1fr;
   }
 }

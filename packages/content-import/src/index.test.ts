@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { lesson32WorkbookPackage } from "./fixtures/lesson-3-2.js";
 import { legacyStaticLesson10 } from "./fixtures/legacy-static-lesson-10.js";
+import { buildModule3WorkbookPackageFromCourseMaterials } from "./course-materials/module-3.js";
 import {
   legacyQuestionToWorkbookKind,
   readLegacyStaticLesson,
@@ -66,5 +67,25 @@ describe("content import validation", () => {
     expect(legacyQuestionToWorkbookKind("self check")).toBe(
       "checklist_interaction",
     );
+  });
+
+  it("preserves legacy sample-question metadata for player rendering", () => {
+    const workbookPackage = buildModule3WorkbookPackageFromCourseMaterials();
+    const interactions = workbookPackage.modules.flatMap((module) =>
+      module.lessons.flatMap((lesson) => lesson.interactions),
+    );
+    const legacySelfCheck = interactions.find(
+      (interaction) => interaction.id === "module-3.legacy-kce-6.q1",
+    );
+
+    expect(legacySelfCheck?.metadata).toMatchObject({
+      sourceType: "legacy-question",
+      legacyType: "self check",
+      legacyId: 1,
+      response: expect.stringContaining("sample solution"),
+      options: expect.arrayContaining([
+        expect.objectContaining({ id: "1", text: expect.any(String) }),
+      ]),
+    });
   });
 });

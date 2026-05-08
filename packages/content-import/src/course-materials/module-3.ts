@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 import YAML from "yaml";
 import {
   WORKBOOK_SCHEMA_VERSION,
-  type ChoiceOption,
   type InteractionKind,
   type InteractionScoringMode,
   type JsonValue,
@@ -102,12 +101,23 @@ interface LegacyQuestion {
   prompt: string;
   points?: number;
   response?: string;
-  options?: Array<{ id: number; text: string }>;
+  options?: Array<{
+    id: number;
+    text: string;
+    value?: string;
+    type?: string;
+  }>;
+  items?: Array<{ id: number; text: string; hint?: string }>;
+  matching_items?: Array<{ id: number; text: string }>;
+  rows?: string[];
+  cols?: string[];
   solution?: JsonValue;
   hint?: string;
+  feedback?: string;
   feedback_correct?: string;
   feedback_incorrect?: string;
   bonus?: boolean;
+  enable_showkeys?: boolean;
 }
 
 export function buildModule3WorkbookPackageFromCourseMaterials({
@@ -571,6 +581,7 @@ function legacyInteraction(
       answerKey: question.solution,
       rubric: criteria.map((item) => item.text),
     },
+    metadata: legacyQuestionMetadata(question),
   };
 }
 
@@ -606,6 +617,43 @@ function legacyQuestionToInteraction(
       answerKey: question.solution,
       rubric: criteria.map((item) => item.text),
     },
+    metadata: legacyQuestionMetadata(question),
+  };
+}
+
+function legacyQuestionMetadata(question: LegacyQuestion): JsonValue {
+  return {
+    sourceType: "legacy-question",
+    legacyType: question.type,
+    legacyId: question.id,
+    response: question.response ? htmlToMarkdown(question.response) : "",
+    options: (question.options ?? []).map((option) => ({
+      id: String(option.id),
+      text: htmlToMarkdown(option.text),
+      value: option.value ?? "",
+      type: option.type ?? "",
+    })),
+    items: (question.items ?? []).map((item) => ({
+      id: String(item.id),
+      text: htmlToMarkdown(item.text),
+      hint: item.hint ? htmlToMarkdown(item.hint) : "",
+    })),
+    matchingItems: (question.matching_items ?? []).map((item) => ({
+      id: String(item.id),
+      text: htmlToMarkdown(item.text),
+    })),
+    rows: question.rows ?? [],
+    columns: question.cols ?? [],
+    hint: question.hint ? htmlToMarkdown(question.hint) : "",
+    feedback: question.feedback ? htmlToMarkdown(question.feedback) : "",
+    feedbackCorrect: question.feedback_correct
+      ? htmlToMarkdown(question.feedback_correct)
+      : "",
+    feedbackIncorrect: question.feedback_incorrect
+      ? htmlToMarkdown(question.feedback_incorrect)
+      : "",
+    bonus: question.bonus ?? false,
+    enableShowKeys: question.enable_showkeys ?? false,
   };
 }
 

@@ -119,6 +119,7 @@ async function getModule3Previews(): Promise<LessonPreview[]> {
           text: option.text,
           value: option.value,
         })),
+        metadata: parseMetadata(interaction.metadata),
       })),
     }));
   } catch (error) {
@@ -149,4 +150,16 @@ export default async function Home() {
       moduleRows={moduleRows}
     />
   );
+}
+
+function parseMetadata(value: string | null): unknown {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(value) as unknown;
+  } catch {
+    return null;
+  }
 }
