@@ -14,11 +14,11 @@ const dashboardStats = [
 const moduleRows = [
   ["M0", "Platform foundation", "Merged"],
   ["M1", "Content import and schema", "Imported"],
-  ["M2", "Lesson runtime", "In progress"],
+  ["M2", "Module 3 lesson runtime", "Pilot"],
   ["M3", "Canvas embedded LTI", "Backlog"],
 ];
 
-async function getLesson32Preview(): Promise<LessonPreview | null> {
+async function getModule3Previews(): Promise<LessonPreview[]> {
   try {
     const courseVersion = await prisma.courseVersion.findFirst({
       where: {
@@ -28,7 +28,9 @@ async function getLesson32Preview(): Promise<LessonPreview | null> {
           some: {
             lessons: {
               some: {
-                stableId: "module-3.lesson-3.2.relationships-and-cardinality",
+                stableId: {
+                  startsWith: "module-3.",
+                },
               },
             },
           },
@@ -45,7 +47,12 @@ async function getLesson32Preview(): Promise<LessonPreview | null> {
           include: {
             lessons: {
               where: {
-                stableId: "module-3.lesson-3.2.relationships-and-cardinality",
+                stableId: {
+                  startsWith: "module-3.",
+                },
+              },
+              orderBy: {
+                lessonNumber: "asc",
               },
               include: {
                 contentBlocks: {
@@ -75,13 +82,13 @@ async function getLesson32Preview(): Promise<LessonPreview | null> {
     const module = courseVersion?.modules.find(
       (item) => item.lessons.length > 0,
     );
-    const lesson = module?.lessons[0];
 
-    if (!courseVersion || !module || !lesson) {
-      return null;
+    if (!courseVersion || !module) {
+      return [];
     }
 
-    return {
+    return module.lessons.map((lesson) => ({
+      id: lesson.stableId,
       courseVersion: courseVersion.versionLabel,
       moduleTitle: module.title,
       lessonTitle: lesson.title,
@@ -112,29 +119,47 @@ async function getLesson32Preview(): Promise<LessonPreview | null> {
           text: option.text,
           value: option.value,
         })),
+        metadata: parseMetadata(interaction.metadata),
       })),
-    };
+    }));
   } catch (error) {
-    console.error("Failed to load Lesson 3.2 preview", error);
-    return null;
+    console.error("Failed to load Module 3 previews", error);
+    return [];
   }
 }
 
 export default async function Home() {
-  const lesson = await getLesson32Preview();
+  const lessons = await getModule3Previews();
   const activityRows = [
     ["API health", "ok"],
     ["Web shell", "ok"],
     ["Local migration", "ok"],
-    ["Lesson 3.2 import", lesson ? lesson.courseVersion : "not found"],
+    [
+      "Module 3 import",
+      lessons.length > 0
+        ? `${lessons[0]?.courseVersion} (${lessons.length})`
+        : "not found",
+    ],
   ];
 
   return (
     <DashboardClient
       activityRows={activityRows}
       dashboardStats={dashboardStats}
-      lesson={lesson}
+      lessons={lessons}
       moduleRows={moduleRows}
     />
   );
+}
+
+function parseMetadata(value: string | null): unknown {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(value) as unknown;
+  } catch {
+    return null;
+  }
 }

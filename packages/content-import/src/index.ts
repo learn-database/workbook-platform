@@ -346,7 +346,7 @@ export async function importWorkbookPackage(
               points: interaction.scoring?.points ?? 0,
               gradingPrompt: interaction.scoring?.gradingPrompt,
               answerKey: stringifyOptional(interaction.scoring?.answerKey),
-              metadata: JSON.stringify(interaction),
+              metadata: stringifyOptional(interaction.metadata),
             },
           });
 

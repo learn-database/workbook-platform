@@ -10,7 +10,7 @@ The platform is planned to support:
 - automatic or self-guided scoring and Canvas grade passback
 - content publishing from `learn-database/course-materials`
 
-See [docs/workbook-platform-build-plan.md](docs/workbook-platform-build-plan.md) for the initial build plan, [docs/development-plan.md](docs/development-plan.md) for the implementation sequence, [docs/github-project-plan.md](docs/github-project-plan.md) for project/milestone/issue planning, and [docs/static-player-migration-inventory.md](docs/static-player-migration-inventory.md) for the legacy static player migration inventory.
+See [docs/workbook-platform-build-plan.md](docs/workbook-platform-build-plan.md) for the initial build plan, [docs/development-plan.md](docs/development-plan.md) for the implementation sequence, [docs/github-project-plan.md](docs/github-project-plan.md) for project/milestone/issue planning, [docs/content-development-import-contract.md](docs/content-development-import-contract.md) for the content authoring/import contract, and [docs/static-player-migration-inventory.md](docs/static-player-migration-inventory.md) for the legacy static player migration inventory.
 
 ## Local Development
 

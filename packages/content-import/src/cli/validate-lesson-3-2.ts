@@ -1,6 +1,8 @@
-import { lesson32WorkbookPackage } from "../fixtures/lesson-3-2.js";
+import { buildLesson32WorkbookPackageFromCourseMaterials } from "../course-materials/lesson-3-2.js";
 import { validateWorkbookPackage } from "../index.js";
 
+const lesson32WorkbookPackage =
+  buildLesson32WorkbookPackageFromCourseMaterials();
 const result = validateWorkbookPackage(lesson32WorkbookPackage);
 
 if (!result.valid) {

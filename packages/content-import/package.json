@@ -15,12 +15,15 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "validate:lesson-3-2": "tsx src/cli/validate-lesson-3-2.ts",
-    "import:lesson-3-2": "tsx src/cli/import-lesson-3-2.ts"
+    "import:lesson-3-2": "tsx src/cli/import-lesson-3-2.ts",
+    "validate:module-3": "tsx src/cli/validate-module-3.ts",
+    "import:module-3": "tsx src/cli/import-module-3.ts"
   },
   "dependencies": {
     "@learn-database/db": "0.1.0",
     "@learn-database/workbook-schema": "0.1.0",
-    "@prisma/client": "^6.0.0"
+    "@prisma/client": "^6.0.0",
+    "yaml": "^2.8.4"
   },
   "devDependencies": {
     "tsx": "^4.0.0"
